@@ -147,9 +147,10 @@ class FNO2d(nn.Module):
 # configs
 ################################################################
 
-TRAIN_PATH = 'data/ns_data_V100_N1000_T50_1.mat'
-TEST_PATH = 'data/ns_data_V100_N1000_T50_2.mat'
-
+#TRAIN_PATH = 'data/ns_data_V100_N1000_T50_1.mat'
+#TEST_PATH = 'data/ns_data_V100_N1000_T50_2.mat'
+TRAIN_PATH = 'data/ns_V1e-3_N5000_T50.mat'
+TEST_PATH = 'data/ns_V1e-3_N5000_T50.mat'
 ntrain = 1000
 ntest = 200
 

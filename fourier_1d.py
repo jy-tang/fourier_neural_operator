@@ -216,6 +216,7 @@ for ep in range(epochs):
 
 # torch.save(model, 'model/ns_fourier_burgers')
 pred = torch.zeros(y_test.shape)
+benchmark = torch.zeros(y_test.shape)
 index = 0
 test_loader = torch.utils.data.DataLoader(torch.utils.data.TensorDataset(x_test, y_test), batch_size=1, shuffle=False)
 with torch.no_grad():
@@ -224,10 +225,12 @@ with torch.no_grad():
         x, y = x.cuda(), y.cuda()
 
         out = model(x)
-        pred[index] = out
+        pred[index] = out.squeeze()
+        benchmark[index] = y
 
         test_l2 += myloss(out.view(1, -1), y.view(1, -1)).item()
         print(index, test_l2)
         index = index + 1
 
-# scipy.io.savemat('pred/burger_test.mat', mdict={'pred': pred.cpu().numpy()})
+    scipy.io.savemat('pred/burger_test.mat', mdict={'pred': pred.cpu().numpy()})
+    scipy.io.savemat('pred/burger_benchmark.mat', mdict={'benchmark': benchmark.cpu().numpy()})
