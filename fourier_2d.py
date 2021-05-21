@@ -134,8 +134,8 @@ class FNO2d(nn.Module):
 ################################################################
 # configs
 ################################################################
-TRAIN_PATH = 'data/piececonst_r421_N1024_smooth1.mat'
-TEST_PATH = 'data/piececonst_r421_N1024_smooth2.mat'
+TRAIN_PATH = 'data/piececonst_r241_N1024_smooth1.mat'
+TEST_PATH = 'data/piececonst_r241_N1024_smooth2.mat'
 
 ntrain = 1000
 ntest = 100
