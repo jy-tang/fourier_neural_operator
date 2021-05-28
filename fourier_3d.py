@@ -95,7 +95,7 @@ class FNO3d(nn.Module):
         self.modes3 = modes3
         self.width = width
         self.fc0 = nn.Linear(13, self.width)
-        # input channel is 12: the solution of the first 10 timesteps + 3 locations (u(1, x, y), ..., u(10, x, y),  x, y, t)
+        # input channel is 13: the solution of the first 10 timesteps + 3 locations (u(1, x, y), ..., u(10, x, y),  x, y, t)
 
         self.conv0 = SpectralConv3d(self.width, self.width, self.modes1, self.modes2, self.modes3)
         self.conv1 = SpectralConv3d(self.width, self.width, self.modes1, self.modes2, self.modes3)
@@ -147,8 +147,8 @@ class FNO3d(nn.Module):
 # configs
 ################################################################
 
-TRAIN_PATH = 'data/ns_data_V100_N1000_T50_1.mat'
-TEST_PATH = 'data/ns_data_V100_N1000_T50_2.mat'
+TRAIN_PATH = 'data/ns_V1e-3_N5000_T50.mat'
+TEST_PATH = 'data/ns_V1e-3_N5000_T50.mat'
 
 ntrain = 1000
 ntest = 200
@@ -159,7 +159,7 @@ width = 20
 batch_size = 10
 batch_size2 = batch_size
 
-epochs = 500
+epochs = 50
 learning_rate = 0.001
 scheduler_step = 100
 scheduler_gamma = 0.5
@@ -286,7 +286,8 @@ for ep in range(epochs):
 
     t2 = default_timer()
     print(ep, t2-t1, train_mse, train_l2, test_l2)
-# torch.save(model, path_model)
+
+torch.save(model, path_model)
 
 
 pred = torch.zeros(test_u.shape)
@@ -297,7 +298,7 @@ with torch.no_grad():
         test_l2 = 0
         x, y = x.cuda(), y.cuda()
 
-        out = model(x)
+        out = model(x).squeeze()
         out = y_normalizer.decode(out)
         pred[index] = out
 

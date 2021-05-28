@@ -1,24 +1,29 @@
-% number of realizations for different Ks
-N = 2048;
-K_range = linspace(0.1,1.5,N);
 % number of grid in price in [0,1]
-s = 8192;
-S_range = linspace(0.1,1,s);
-
-a= zeros(N,s);
-u = zeros(N,s);
-r=0.05;
-T = 1;
-sigma = 0.2;
+Ns = 64;
+S_range = linspace(0,1,Ns);
+Nt = 50;
+Tmax = 2;
+T_range = linspace(0,Tmax,Nt+1);
+T_range(1)=[];
 
 
-for k = 1:N
-    K = rand()*1.0;
-    [c,~] = BS_EuroCallPut(S_range,K,r,sigma,T,0);
-    c_boundary = max(S_range-K,0);
-    a(k,:) = c_boundary;
-    u(k,:) = c;
-    
+r=0.0;
+% number of realizations for different Ks
+N = 5000;
+sigma = rand(N,1);
+K = rand(N,1);
+u = zeros(N,Ns,Nt);
+for counts = 1:Ns
+    counts
+    for countt = 1:Nt
+        S = S_range(counts);
+        T = T_range(countt);
+        
+        u(:,counts,countt) = BS_EuroCallPut(S,K,r,sigma,T,0);
+    end
 end
+        
 
-save('../../data/BS_data1.mat','a','u')
+
+
+save('../../data/BS_data2.mat','u','sigma','K','S_range','T_range')
